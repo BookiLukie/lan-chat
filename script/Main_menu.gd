@@ -10,7 +10,7 @@ func _on_button_pressed() -> void:
 	LanHandler.client_info.set("name", $Panel2/TextEdit2.text)
 	await get_tree().process_frame
 	get_tree().change_scene_to_file("res://host_ui.tscn")
-	LanHandler.create_game()
+	LanHandler.create_lobby()
 	
 ##Join
 func _on_button_2_pressed() -> void:

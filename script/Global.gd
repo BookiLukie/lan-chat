@@ -18,7 +18,7 @@ func tell_server(player,data,amount):
 @rpc("any_peer")
 func tell_clients(text):
 	print(text)
-# Check for the Lobby label
+	# Check for the Lobby label
 	server_message_received.emit(text)
 	print("DEBUG: Signal 'server_message_received' was emitted.")
 	

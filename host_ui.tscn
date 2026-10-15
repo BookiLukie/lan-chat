@@ -1,5 +1,8 @@
 [gd_scene format=3 uid="uid://qawqeto7pfu4"]
 
+[ext_resource type="Script" uid="uid://vy5wfn21d3pp" path="res://script/hostUI.gd" id="1_bxxqf"]
+[ext_resource type="PackedScene" uid="uid://ocp7kpg64ne0" path="res://text_ui.tscn" id="2_75ep8"]
+
 [node name="HostUI" type="Control" unique_id=190145693]
 layout_mode = 3
 anchors_preset = 15
@@ -7,3 +10,88 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_bxxqf")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=567378269]
+custom_minimum_size = Vector2(1280, 720)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+color = Color(0.12225223, 0.12225223, 0.12225223, 1)
+
+[node name="TextEdit" type="LineEdit" parent="." unique_id=1225607951]
+layout_mode = 0
+offset_top = 682.0
+offset_right = 426.0
+offset_bottom = 720.0
+placeholder_text = "Send Server Messege"
+
+[node name="Text Boxes" type="Control" parent="." unique_id=1146323547]
+anchors_preset = 0
+offset_left = 24.0
+offset_top = 72.0
+offset_right = 64.0
+offset_bottom = 112.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Text Boxes" unique_id=188237920]
+layout_mode = 0
+offset_left = -9.0
+offset_top = -61.0
+offset_right = 280.0
+offset_bottom = -21.0
+theme_override_font_sizes/bold_font_size = 32
+bbcode_enabled = true
+text = "[b][wave][rainbow freq=1 sat=0.9 val=0.9 speed=0.1] You are the host"
+scroll_active = false
+
+[node name="IPAddress" type="RichTextLabel" parent="Text Boxes" unique_id=735352265]
+layout_mode = 0
+offset_right = 365.0
+offset_bottom = 40.0
+bbcode_enabled = true
+text = "IP address: 
+"
+
+[node name="ClientList" type="RichTextLabel" parent="Text Boxes" unique_id=1595151619]
+layout_mode = 0
+offset_top = 35.0
+offset_right = 359.0
+offset_bottom = 587.0
+bbcode_enabled = true
+text = "Client List: [br]"
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1567546722]
+layout_mode = 0
+offset_left = 1051.0
+offset_top = 16.0
+offset_right = 1256.0
+offset_bottom = 228.0
+
+[node name="RegrabIP" type="Button" parent="VBoxContainer" unique_id=332507538]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Regrab IP Addreses"
+
+[node name="RefreshList" type="Button" parent="VBoxContainer" unique_id=1870025604]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Refresh Client List"
+
+[node name="KickAll" type="Button" parent="VBoxContainer" unique_id=1788244525]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Kick All"
+
+[node name="SaveTextLog" type="Button" parent="VBoxContainer" unique_id=448264216]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Save Text Log"
+
+[node name="TextUI" parent="." unique_id=2119366142 instance=ExtResource("2_75ep8")]
+layout_mode = 1
+offset_left = 441.0
+offset_top = 11.0
+offset_right = -338.0
+offset_bottom = -6.0
+
+[connection signal="text_submitted" from="TextEdit" to="." method="_on_server_message_text_submitted"]

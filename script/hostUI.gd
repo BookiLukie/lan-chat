@@ -1,0 +1,38 @@
+extends Control
+var addresses
+var ipv4s: Array = []
+
+func _ready():
+	get_all_ipv4()
+	LanHandler.client_connected.connect(add_to_client_list)
+	LanHandler.client_disconnected.connect(add_to_client_list)
+	await get_tree().process_frame
+	$"Text Boxes/IPAddress".text = str(ipv4s).remove_chars('"[]')
+
+func get_all_ipv4() -> Array:
+	for address in IP.get_local_addresses():
+		if address.is_valid_ip_address() and address.find(":") == -1 and not address.begins_with("127.") and not address.begins_with("169."):
+			address = address.remove_chars('"[]')
+			ipv4s.append(address)
+	return ipv4s
+
+func add_to_client_list(client_id, client_info: Dictionary):
+	print("New Client ", client_id, client_info)
+	$"Text Boxes/ClientList".text += client_info.get("name") + ": " + str(client_id) + "\n"
+
+func remove_from_client_list(client_id):
+	var text : String = $"Text Boxes/ClientList".text
+	var lines = text.split("\n")
+	var finished_lines = []
+	for line in lines:
+		if line.contains(client_id):
+			continue
+		else:
+			finished_lines.append(line)
+	
+	text = "\n".join(finished_lines)
+	$"Text Boxes/ClientList".text = text
+
+@rpc("authority")
+func _on_server_message_text_submitted(new_text: String) -> void:
+	Global.rpc("tell_clients",new_text)
