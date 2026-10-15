@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://bbcel2e5f2phv"]
+
+[ext_resource type="Script" uid="uid://bpmtb14ep3tij" path="res://Main_menu.gd" id="1_06t4h"]
+
+[node name="MainMenu" type="Control" unique_id=193080863]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_06t4h")
+
+[node name="Panel" type="Panel" parent="." unique_id=1386904398]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 720.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel" unique_id=245147067]
+layout_mode = 0
+offset_right = 916.0
+offset_bottom = 156.0
+theme_override_font_sizes/normal_font_size = 16
+theme_override_font_sizes/bold_font_size = 64
+bbcode_enabled = true
+text = "[b][wave][rainbow freq=1 sat=0.9 val=0.9 speed=0.1] Andys lan texting service "
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1244412319]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.44200003
+anchor_right = 0.19700001
+anchor_bottom = 1.0
+offset_top = -0.24002075
+offset_right = -0.16001892
+offset_bottom = -1.0
+
+[node name="Button" type="Button" parent="VBoxContainer" unique_id=407004989]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = "Host Lobby"
+
+[node name="Button2" type="Button" parent="VBoxContainer" unique_id=1535863586]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = "Join Lobby"
+
+[node name="Button3" type="Button" parent="VBoxContainer" unique_id=780080069]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = "Settings"
+
+[node name="Button4" type="Button" parent="VBoxContainer" unique_id=1737426760]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = "Quit"
+
+[node name="Panel2" type="Panel" parent="." unique_id=1281083568]
+layout_mode = 0
+offset_left = 294.0
+offset_top = 340.0
+offset_right = 598.0
+offset_bottom = 463.0
+
+[node name="TextEdit" type="TextEdit" parent="Panel2" unique_id=1426048987]
+layout_mode = 0
+offset_right = 301.0
+offset_bottom = 55.0
+placeholder_text = "Enter IP address eg 10.202.0.00"
+
+[node name="TextEdit2" type="TextEdit" parent="Panel2" unique_id=61892269]
+layout_mode = 0
+offset_top = 64.0
+offset_right = 301.0
+offset_bottom = 119.0
+placeholder_text = "Enter Username: "
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_button_3_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button4" to="." method="_on_button_4_pressed"]
