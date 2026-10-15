@@ -20,7 +20,7 @@ func _on_button_2_pressed() -> void:
 	Global.host_ip = str($Panel2/TextEdit.text)
 	LanHandler.client_info.set("name",$Panel2/TextEdit2.text)
 	if LanHandler.join_lobby(Global.host_ip):
-		get_tree().change_scene_to_file("res://text_ui.tscn")
+		get_tree().change_scene_to_file("res://client_view.tscn")
 
 ##SETTINGS
 func _on_button_3_pressed() -> void:

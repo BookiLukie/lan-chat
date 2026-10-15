@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://tux8yrc171m1"]
 
+[ext_resource type="Script" uid="uid://c1qqvf8ab0lpd" path="res://client_view.gd" id="1_4i67e"]
 [ext_resource type="PackedScene" uid="uid://ocp7kpg64ne0" path="res://text_ui.tscn" id="1_bq57s"]
 
 [node name="client_view" type="Control" unique_id=375847334]
@@ -9,6 +10,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_4i67e")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1935651626]
 custom_minimum_size = Vector2(1280, 720)
@@ -19,5 +21,39 @@ color = Color(0.12225223, 0.12225223, 0.12225223, 1)
 
 [node name="TextUI" parent="." unique_id=2119366142 instance=ExtResource("1_bq57s")]
 layout_mode = 1
-offset_left = 333.0
-offset_right = -227.0
+offset_left = 276.0
+offset_right = -284.0
+
+[node name="Text Boxes" type="Control" parent="." unique_id=1830436815]
+anchors_preset = 0
+offset_left = 24.0
+offset_top = 72.0
+offset_right = 64.0
+offset_bottom = 112.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Text Boxes" unique_id=1777808757]
+layout_mode = 0
+offset_left = -11.0
+offset_top = -61.0
+offset_right = 278.0
+offset_bottom = -13.0
+theme_override_font_sizes/bold_font_size = 32
+bbcode_enabled = true
+text = "[b][wave][rainbow freq=1 sat=0.9 val=0.9 speed=0.1] Lan Chat V1"
+scroll_active = false
+
+[node name="IPAddress" type="RichTextLabel" parent="Text Boxes" unique_id=339760582]
+layout_mode = 0
+offset_right = 365.0
+offset_bottom = 40.0
+bbcode_enabled = true
+text = "Connected to: 
+"
+
+[node name="ClientList" type="RichTextLabel" parent="Text Boxes" unique_id=709242700]
+layout_mode = 0
+offset_top = 35.0
+offset_right = 359.0
+offset_bottom = 587.0
+bbcode_enabled = true
+text = "Client List: [br]"

@@ -115,6 +115,8 @@ func _on_message_received(user,message_text, data_type,image_height = 100, times
 		await get_tree().process_frame
 		var scroll = $ScrollContainer as ScrollContainer
 		if scroll:
+			await get_tree().process_frame
+			await get_tree().process_frame
 			scroll.scroll_vertical = int(scroll.get_v_scroll_bar().max_value)
 
 

@@ -5,7 +5,7 @@ var ipv4s: Array = []
 func _ready():
 	get_all_ipv4()
 	LanHandler.client_connected.connect(add_to_client_list)
-	LanHandler.client_disconnected.connect(add_to_client_list)
+	LanHandler.client_disconnected.connect(remove_from_client_list)
 	await get_tree().process_frame
 	$"Text Boxes/IPAddress".text = str(ipv4s).remove_chars('"[]')
 
@@ -23,9 +23,9 @@ func add_to_client_list(client_id, client_info: Dictionary):
 func remove_from_client_list(client_id):
 	var text : String = $"Text Boxes/ClientList".text
 	var lines = text.split("\n")
-	var finished_lines = []
+	var finished_lines = ["Client List: [br]"]
 	for line in lines:
-		if line.contains(client_id):
+		if line.contains(str(client_id)):
 			continue
 		else:
 			finished_lines.append(line)

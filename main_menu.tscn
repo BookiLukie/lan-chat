@@ -17,9 +17,12 @@ offset_right = 1280.0
 offset_bottom = 720.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Panel" unique_id=245147067]
-layout_mode = 0
-offset_right = 916.0
-offset_bottom = 156.0
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.716
+anchor_bottom = 0.21700001
+offset_right = -0.4800415
+offset_bottom = -0.2400055
 theme_override_font_sizes/normal_font_size = 16
 theme_override_font_sizes/bold_font_size = 64
 bbcode_enabled = true
@@ -58,23 +61,35 @@ layout_mode = 2
 text = "Quit"
 
 [node name="Panel2" type="Panel" parent="." unique_id=1281083568]
-layout_mode = 0
-offset_left = 294.0
-offset_top = 340.0
-offset_right = 598.0
-offset_bottom = 463.0
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.24200001
+anchor_top = 0.47200003
+anchor_right = 0.467
+anchor_bottom = 0.643
+offset_left = -15.76001
+offset_top = 0.15997314
+offset_right = 0.23999023
+offset_bottom = 0.040008545
 
-[node name="TextEdit" type="TextEdit" parent="Panel2" unique_id=1426048987]
-layout_mode = 0
-offset_right = 301.0
-offset_bottom = 55.0
+[node name="TextEdit" type="LineEdit" parent="Panel2" unique_id=154536333]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.99000007
+anchor_bottom = 0.44700003
+offset_right = 0.039978027
+offset_bottom = 0.018997192
 placeholder_text = "Enter IP address eg 10.202.0.00"
 
-[node name="TextEdit2" type="TextEdit" parent="Panel2" unique_id=61892269]
-layout_mode = 0
-offset_top = 64.0
-offset_right = 301.0
-offset_bottom = 119.0
+[node name="TextEdit2" type="LineEdit" parent="Panel2" unique_id=566910372]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.52000004
+anchor_right = 0.99000007
+anchor_bottom = 0.96700007
+offset_top = 0.039993286
+offset_right = 0.039978027
+offset_bottom = 0.05899048
 placeholder_text = "Enter Username: "
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
