@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://tux8yrc171m1"]
 
-[ext_resource type="Script" uid="uid://c1qqvf8ab0lpd" path="res://client_view.gd" id="1_4i67e"]
+[ext_resource type="Script" uid="uid://c1qqvf8ab0lpd" path="res://script/client_view.gd" id="1_4i67e"]
 [ext_resource type="PackedScene" uid="uid://ocp7kpg64ne0" path="res://text_ui.tscn" id="1_bq57s"]
 
 [node name="client_view" type="Control" unique_id=375847334]
