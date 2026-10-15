@@ -3,9 +3,10 @@ extends Control
 # Node references based on standard chat layout structure
 @onready var message_container: VBoxContainer = $ScrollContainer/VBoxContainer
 @onready var message_input: LineEdit = $LineEdit
-@onready var send_button: Button = $SendButton
+@onready var send_button: Button = $Button
 
 func _ready() -> void:
+	$ScrollContainer/VBoxContainer.custom_minimum_size.x = $ScrollContainer.size.x
 	# 1. Connect to Global's signal to listen for incoming messages from any peer or the host[cite: 1]
 	Global.message_received.connect(_on_message_received)
 
@@ -27,7 +28,7 @@ func send_message() -> void:
 	var payload = username + "|||" + text_content
 	
 	# Call Global RPC to broadcast the message to all connected peers and host[cite: 1]
-	Global.rpc("tell_clients", payload)
+	Global.rpc("new_message", payload)
 	
 	# Clear the input box after sending
 	message_input.clear()
@@ -50,6 +51,7 @@ func _on_message_received(message_text: String) -> void:
 	
 	# Add the message instance to the chat container on every client's end
 	if message_container:
+		message_container
 		message_container.add_child(new_message)
 		
 		# Auto-scroll to the bottom of the chat window

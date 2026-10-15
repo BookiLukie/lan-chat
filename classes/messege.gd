@@ -7,31 +7,45 @@ var user = "USER"
 var time = Time.get_unix_time_from_system()
 
 func _ready() -> void:
-	custom_minimum_size = Vector2(300, 100)
+	size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	
+	# Wait for container layout to settle
+	await get_tree().process_frame
+	
+	# Dynamically get parent width, defaulting safely if unavailable
+	var parent_width = 300.0
+	if get_parent() is Control and get_parent().size.x > 0:
+		parent_width = get_parent().size.x - 20 # 20px margin padding
+		
+	var usable_width = parent_width
+	var text_width = usable_width - 20 # 10px padding on left and right
+	
+	custom_minimum_size = Vector2(usable_width, 50)
 	position = Vector2.ZERO
 	
 	# 1. Setup the username and timestamp header
 	var name_display = WrapRichText.new()
 	name_display.bbcode_enabled = true
 	name_display.position = Vector2(10, 5)
-	name_display.custom_minimum_size = Vector2(280, 25)
+	name_display.custom_minimum_size = Vector2(text_width, 25)
+	name_display.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_display.text = user + " [color=#808080]" + str(format_message_time(time)) + "[/color]"
 	add_child(name_display)
 	
 	# 2. Setup the message body text node
 	var text = WrapRichText.new()
 	text.bbcode_enabled = true
-	text.fit_content = true # Crucial: allows the label to expand vertically when wrapping
+	text.fit_content = true
 	text.position = Vector2(10, 30)
-	text.max_pixel_width = 280.0
+	text.custom_minimum_size = Vector2(text_width, 0)
+	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	text.update_wrapping(current_text)
 	add_child(text)
 	
 	# 3. Dynamically resize the Panel height to fit the header + text + bottom padding
-	# Wait one frame for the RichTextLabel to calculate its wrapped height, or compute it:
 	await get_tree().process_frame
-	var total_height = text.position.y + text.size.y + 10 # 10px bottom padding
-	custom_minimum_size = Vector2(300, max(100.0, total_height))
+	var total_height = text.position.y + text.size.y + 15 # 15px bottom padding
+	custom_minimum_size = Vector2(usable_width, max(50.0, total_height))
 
 ## Formats a message's unix timestamp relative to the current system time in local time.
 func format_message_time(msg_unix_time: float) -> String:

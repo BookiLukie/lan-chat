@@ -7,6 +7,8 @@ func _ready() -> void:
 func _on_button_pressed() -> void:
 	Global.current_client.role = "host"
 	Global.current_client.name = $Panel2/TextEdit2.text
+	if not $Panel2/TextEdit2.text:
+		LanHandler.client_info.set("name", "Host")
 	LanHandler.client_info.set("name", $Panel2/TextEdit2.text)
 	await get_tree().process_frame
 	get_tree().change_scene_to_file("res://host_ui.tscn")
