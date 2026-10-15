@@ -40,3 +40,19 @@ func _on_server_message_text_submitted(new_text: String) -> void:
 
 func _on_spawn_test_text_pressed() -> void:
 	Global.rpc("new_message",)
+
+
+func _on_regrab_ip_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_refresh_list_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_kick_all_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_save_text_log_pressed() -> void:
+	pass # Replace with function body.

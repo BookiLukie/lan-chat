@@ -22,9 +22,9 @@ color = Color(0.12225223, 0.12225223, 0.12225223, 1)
 [node name="TextEdit" type="LineEdit" parent="." unique_id=1225607951]
 layout_mode = 0
 offset_top = 682.0
-offset_right = 426.0
+offset_right = 286.0
 offset_bottom = 720.0
-placeholder_text = "Send Server Messege"
+placeholder_text = "Command"
 
 [node name="Text Boxes" type="Control" parent="." unique_id=1146323547]
 anchors_preset = 0
@@ -35,9 +35,9 @@ offset_bottom = 112.0
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Text Boxes" unique_id=188237920]
 layout_mode = 0
-offset_left = -9.0
+offset_left = -11.0
 offset_top = -61.0
-offset_right = 280.0
+offset_right = 278.0
 offset_bottom = -21.0
 theme_override_font_sizes/bold_font_size = 32
 bbcode_enabled = true
@@ -82,22 +82,14 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "Kick All"
 
-[node name="SaveTextLog" type="Button" parent="VBoxContainer" unique_id=448264216]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-text = "Save Text Log"
-
-[node name="SpawnTestText" type="Button" parent="VBoxContainer" unique_id=193171496]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-text = "Spawn Test Text"
-
 [node name="TextUI" parent="." unique_id=2119366142 instance=ExtResource("2_75ep8")]
 layout_mode = 1
-offset_left = 441.0
-offset_top = 11.0
-offset_right = -338.0
-offset_bottom = -6.0
+offset_left = 297.0
+offset_top = 1.0
+offset_right = -283.0
+offset_bottom = 1.0
 
 [connection signal="text_submitted" from="TextEdit" to="." method="_on_server_message_text_submitted"]
-[connection signal="pressed" from="VBoxContainer/SpawnTestText" to="." method="_on_spawn_test_text_pressed"]
+[connection signal="pressed" from="VBoxContainer/RegrabIP" to="." method="_on_regrab_ip_pressed"]
+[connection signal="pressed" from="VBoxContainer/RefreshList" to="." method="_on_refresh_list_pressed"]
+[connection signal="pressed" from="VBoxContainer/KickAll" to="." method="_on_kick_all_pressed"]

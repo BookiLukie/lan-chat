@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://tux8yrc171m1"]
 
+[ext_resource type="PackedScene" uid="uid://ocp7kpg64ne0" path="res://text_ui.tscn" id="1_bq57s"]
+
 [node name="client_view" type="Control" unique_id=375847334]
 layout_mode = 3
 anchors_preset = 15
@@ -14,3 +16,8 @@ layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 color = Color(0.12225223, 0.12225223, 0.12225223, 1)
+
+[node name="TextUI" parent="." unique_id=2119366142 instance=ExtResource("1_bq57s")]
+layout_mode = 1
+offset_left = 333.0
+offset_right = -227.0

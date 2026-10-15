@@ -1,11 +1,12 @@
 extends Panel
 class_name msg
 
-var current_text: String = "This is a placeholder message. it is also very long This is a placeholder message. it is also very longThis is a placeholder message. it is also very longThis is a placeholder message. it is also very long"
+var current_text = "This is a placeholder message. it is also very long This is a placeholder message. it is also very longThis is a placeholder message. it is also very longThis is a placeholder message. it is also very long"
 var bbcode_effects
 var user = "USER"
 var time = Time.get_unix_time_from_system()
-
+var filetype = "string"
+var image_size = 100
 func _ready() -> void:
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	
@@ -31,22 +32,61 @@ func _ready() -> void:
 	name_display.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_display.text = user + " [color=#808080]" + str(format_message_time(time)) + "[/color]"
 	add_child(name_display)
-	
-	# 2. Setup the message body text node
 	var text = WrapRichText.new()
-	text.bbcode_enabled = true
-	text.fit_content = true
-	text.position = Vector2(10, 30)
-	text.custom_minimum_size = Vector2(text_width, 0)
-	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	text.update_wrapping(current_text)
-	add_child(text)
-	
-	# 3. Dynamically resize the Panel height to fit the header + text + bottom padding
-	await get_tree().process_frame
-	var total_height = text.position.y + text.size.y + 15 # 15px bottom padding
-	custom_minimum_size = Vector2(usable_width, max(50.0, total_height))
+	if filetype != "string":
+		text.is_queued_for_deletion()
+		var texture_rect = load_image_from_buffer(current_text,filetype,text_width)
+		await get_tree().process_frame
+		var total_height = texture_rect.position.y + texture_rect.size.y + 15 # 15px bottom padding
+		custom_minimum_size = Vector2(usable_width, max(50.0, total_height))
+	else:
+		# 2. Setup the message body text node
+		text.bbcode_enabled = true
+		text.fit_content = true
+		text.position = Vector2(10, 30)
+		text.custom_minimum_size = Vector2(text_width, 0)
+		text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		text.update_wrapping(current_text)
+		add_child(text)
+		# 3. Dynamically resize the Panel height to fit the header + text + bottom padding
+		await get_tree().process_frame
+		var total_height = text.position.y + text.size.y + 15 # 15px bottom padding
+		custom_minimum_size = Vector2(usable_width, max(50.0, total_height))
 
+func load_image_from_buffer(buffer, type, text_width):
+	var image = Image.new()
+	var loaded_file : Error = FAILED
+	
+	match type.to_lower():
+		"png":
+			loaded_file = image.load_png_from_buffer(buffer)
+		"jpg","jpeg":
+			loaded_file = image.load_jpg_from_buffer(buffer)
+		"webp":
+			loaded_file = image.load_webp_from_buffer(buffer)
+		"svg":
+			loaded_file = image.load_svg_from_buffer(buffer)
+		_:
+			print("failed to find file type")
+	
+	if loaded_file == OK:
+		var texture = ImageTexture.create_from_image(image)
+		print(texture)
+		var texture_rect = TextureRect.new()
+		texture_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
+		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+		texture_rect.texture = texture
+		texture_rect.position = Vector2(10,30)
+		texture_rect.custom_minimum_size.x = text_width
+		texture_rect.custom_minimum_size.y = image_size
+		texture_rect.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		add_child(texture_rect)
+		print("loaded image from buffer")
+		return texture_rect
+	else:
+		print("IMAGE FAILED TO LOAD FROM BUFFER")
+		return
+		
 ## Formats a message's unix timestamp relative to the current system time in local time.
 func format_message_time(msg_unix_time: float) -> String:
 	# Dynamically convert UTC unix time to local time using the system's timezone bias (in minutes)

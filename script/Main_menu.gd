@@ -6,7 +6,7 @@ func _ready() -> void:
 ##Host
 func _on_button_pressed() -> void:
 	Global.current_client.role = "host"
-	Global.current_client.name = $Panel2/TextEdit2.text
+	Global.current_client.user = $Panel2/TextEdit2.text
 	if not $Panel2/TextEdit2.text:
 		LanHandler.client_info.set("name", "Host")
 	LanHandler.client_info.set("name", $Panel2/TextEdit2.text)
