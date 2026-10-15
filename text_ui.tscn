@@ -52,3 +52,6 @@ offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Send"
+
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

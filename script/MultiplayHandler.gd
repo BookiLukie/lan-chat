@@ -4,7 +4,7 @@ var IP_ADDRESS = "192.168.56.1"
 const PORT : int = 9999
 const MAX_CLIENTS = 32
 
-var client = {}
+var clients = {}
 
 var client_info = {
 	"name": "Name",
@@ -31,7 +31,7 @@ func create_lobby():
 		return error
 	multiplayer.multiplayer_peer = peer
 
-	client[1] = client_info
+	clients[1] = client_info
 	client_connected.emit(1, client_info)
 
 func join_lobby(address : String = ""):
@@ -47,7 +47,7 @@ func join_lobby(address : String = ""):
 
 func remove_multiplayer_peer():
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
-	client.clear()
+	clients.clear()
 	
 # When the server decides to start the game from a UI scene,
 # do Lobby.load_game.rpc(filepath)
@@ -61,7 +61,7 @@ func load_game(game_scene_path):
 func player_loaded():
 	if multiplayer.is_server():
 		clients_loaded += 1
-		if clients_loaded == client.size():
+		if clients_loaded == clients.size():
 			$/root/Game.start_game()
 			clients_loaded = 0
 
@@ -73,17 +73,17 @@ func _on_client_connected(id):
 @rpc("any_peer", "reliable")
 func _register_client(new_client_info):
 	var new_client_id = multiplayer.get_remote_sender_id()
-	client[new_client_id] = new_client_info
+	clients[new_client_id] = new_client_info
 	client_connected.emit(new_client_id, new_client_info)
 	Global.rpc("updateplayerlist",new_client_id, new_client_info)
 	
 func _on_client_disconnected(id):
-	client.erase(id)
+	clients.erase(id)
 	client_disconnected.emit(id)
 
 func _on_connected_ok():
 	var peer_id = multiplayer.get_unique_id()
-	client[peer_id] = client_info
+	clients[peer_id] = client_info
 	client_connected.emit(peer_id, client_info)
 	print("YEYEYYEYEYYE")
 
@@ -93,5 +93,5 @@ func _on_connected_fail():
 
 func _on_server_disconnected():
 	remove_multiplayer_peer()
-	client.clear()
+	clients.clear()
 	server_disconnected.emit()

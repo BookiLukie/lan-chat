@@ -36,3 +36,7 @@ func remove_from_client_list(client_id):
 @rpc("authority")
 func _on_server_message_text_submitted(new_text: String) -> void:
 	Global.rpc("tell_clients",new_text)
+
+
+func _on_spawn_test_text_pressed() -> void:
+	Global.rpc("new_message",)

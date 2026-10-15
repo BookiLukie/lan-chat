@@ -7,19 +7,7 @@ extends Control
 
 func _ready() -> void:
 	# 1. Connect to Global's signal to listen for incoming messages from any peer or the host[cite: 1]
-	Global.server_message_received.connect(_on_server_message_received)
-	
-	# 2. Connect UI interaction signals
-	if send_button:
-		send_button.pressed.connect(_on_send_pressed)
-	if message_input:
-		message_input.text_submitted.connect(_on_text_submitted)
-
-func _on_send_pressed() -> void:
-	send_message()
-
-func _on_text_submitted(_text: String) -> void:
-	send_message()
+	Global.message_received.connect(_on_message_received)
 
 ## Sends the message to all clients and the host via the Global script RPC[cite: 1]
 func send_message() -> void:
@@ -45,7 +33,7 @@ func send_message() -> void:
 	message_input.clear()
 
 ## Receives broadcasted messages from Global, instantiates the msg class, and populates data[cite: 1, 6]
-func _on_server_message_received(message_text: String) -> void:
+func _on_message_received(message_text: String) -> void:
 	# Split payload back into username and message text
 	var parts = message_text.split("|||", true, 1)
 	var username = "System"
@@ -69,3 +57,11 @@ func _on_server_message_received(message_text: String) -> void:
 		var scroll = $ScrollContainer as ScrollContainer
 		if scroll:
 			scroll.scroll_vertical = int(scroll.get_v_scroll_bar().max_value)
+
+
+func _on_line_edit_text_submitted(new_text: String) -> void:
+	send_message()
+
+
+func _on_button_pressed() -> void:
+	send_message()

@@ -87,6 +87,11 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "Save Text Log"
 
+[node name="SpawnTestText" type="Button" parent="VBoxContainer" unique_id=193171496]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Spawn Test Text"
+
 [node name="TextUI" parent="." unique_id=2119366142 instance=ExtResource("2_75ep8")]
 layout_mode = 1
 offset_left = 441.0
@@ -95,3 +100,4 @@ offset_right = -338.0
 offset_bottom = -6.0
 
 [connection signal="text_submitted" from="TextEdit" to="." method="_on_server_message_text_submitted"]
+[connection signal="pressed" from="VBoxContainer/SpawnTestText" to="." method="_on_spawn_test_text_pressed"]
