@@ -43,6 +43,7 @@ offset_top = -0.32000732
 offset_right = 0.23999023
 offset_bottom = -1.0
 placeholder_text = "Send a messge"
+keep_editing_on_text_submit = true
 
 [node name="Button" type="Button" parent="." unique_id=1153226587]
 layout_mode = 1

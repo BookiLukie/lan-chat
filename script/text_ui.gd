@@ -21,7 +21,7 @@ func send_message() -> void:
 		return
 		
 	var text_content = message_input.text.strip_edges()
-	if text_content.is_empty() and currently_loaded_file != null:
+	if text_content.is_empty() and currently_loaded_file == null:
 		return
 		
 	# Retrieve the current player's username from Global or LanHandler
