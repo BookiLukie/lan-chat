@@ -71,7 +71,6 @@ func load_image_from_buffer(buffer, type, text_width):
 	
 	if loaded_file == OK:
 		var texture = ImageTexture.create_from_image(image)
-		print(texture)
 		var texture_rect = TextureRect.new()
 		texture_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH_PROPORTIONAL
 		texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT

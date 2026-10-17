@@ -8,7 +8,11 @@ func _ready():
 	LanHandler.client_disconnected.connect(_on_client_list_changed_disc)
 	await get_tree().process_frame
 	$"Text Boxes/IPAddress".text = str(ipv4s).remove_chars('"[]')
+	$"Text Boxes/Username".text = Global.current_client.user
 
+func _process(delta: float) -> void:
+	LanHandler.handle_server_broadcasting(delta)
+	
 func get_all_ipv4() -> Array:
 	for address in IP.get_local_addresses():
 		if address.is_valid_ip_address() and address.find(":") == -1 and not address.begins_with("127.") and not address.begins_with("169."):
@@ -54,6 +58,15 @@ func refresh_client_display():
 	# Update the UI text box cleanly without duplicate headers or stale entries
 	$"Text Boxes/ClientList".text = list_text
 
+func _on_discovery_toggle_toggled(toggled_on: bool) -> void:
+	LanHandler.set_discoverable(toggled_on)
+	if toggled_on:
+		print("Server is now discoverable on the LAN.")
+		$VBoxContainer/ServerDiscovery/ColorRect.color = Color(0.0, 0.662, 0.161, 1.0)
+	else:
+		$VBoxContainer/ServerDiscovery/ColorRect.color = Color(0.99, 0.0, 0.0, 1.0)
+		print("Server is now hidden from LAN discovery.")
+		
 @rpc("authority")
 func _on_server_message_text_submitted(new_text: String) -> void:
 	Global.rpc("tell_clients",new_text)

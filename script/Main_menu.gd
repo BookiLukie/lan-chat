@@ -29,3 +29,7 @@ func _on_button_3_pressed() -> void:
 ##Quit
 func _on_button_4_pressed() -> void:
 	get_tree().quit()
+
+
+func _on_button_5_pressed() -> void:
+	$Panel3.visible = !$Panel3.visible

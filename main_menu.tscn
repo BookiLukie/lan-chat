@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bbcel2e5f2phv"]
 
 [ext_resource type="Script" uid="uid://bpmtb14ep3tij" path="res://script/Main_menu.gd" id="1_06t4h"]
+[ext_resource type="Script" uid="uid://crkkr56swxxlq" path="res://script/ServerList.gd" id="2_7vrkn"]
 
 [node name="MainMenu" type="Control" unique_id=193080863]
 layout_mode = 3
@@ -21,7 +22,7 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.716
 anchor_bottom = 0.21700001
-offset_right = -0.4800415
+offset_right = 7.5199585
 offset_bottom = -0.2400055
 theme_override_font_sizes/normal_font_size = 16
 theme_override_font_sizes/bold_font_size = 64
@@ -45,6 +46,11 @@ custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
 text = "Host Lobby"
 
+[node name="Button5" type="Button" parent="VBoxContainer" unique_id=1692125255]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+text = "Find Lobby"
+
 [node name="Button2" type="Button" parent="VBoxContainer" unique_id=1535863586]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 2
@@ -63,14 +69,13 @@ text = "Quit"
 [node name="Panel2" type="Panel" parent="." unique_id=1281083568]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.24200001
-anchor_top = 0.47200003
-anchor_right = 0.467
-anchor_bottom = 0.643
-offset_left = -15.76001
-offset_top = 0.15997314
-offset_right = 0.23999023
-offset_bottom = 0.040008545
+anchor_left = 0.001
+anchor_top = 0.25
+anchor_right = 0.238
+anchor_bottom = 0.42100003
+offset_left = -0.2800001
+offset_right = 0.35998535
+offset_bottom = -0.120025635
 
 [node name="TextEdit" type="LineEdit" parent="Panel2" unique_id=154536333]
 layout_mode = 1
@@ -92,7 +97,46 @@ offset_right = 0.039978027
 offset_bottom = 0.05899048
 placeholder_text = "Enter Username: "
 
+[node name="Panel3" type="Panel" parent="." unique_id=175264817]
+visible = false
+layout_mode = 0
+offset_left = 323.0
+offset_top = 181.0
+offset_right = 689.0
+offset_bottom = 588.0
+script = ExtResource("2_7vrkn")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Panel3" unique_id=1110501886]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 0.13800001
+offset_bottom = -0.16600418
+theme_override_font_sizes/bold_font_size = 32
+bbcode_enabled = true
+text = "[b][wave][rainbow freq=1 sat=0.9 val=0.9 speed=0.1] Server List"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel3" unique_id=25083598]
+layout_mode = 0
+offset_top = 60.0
+offset_right = 366.0
+offset_bottom = 406.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel3/ScrollContainer" unique_id=496336502]
+layout_mode = 2
+
+[node name="Button" type="Button" parent="Panel3" unique_id=75670269]
+layout_mode = 0
+offset_top = -32.0
+offset_right = 139.0
+offset_bottom = -1.0
+text = "Restart/Refresh"
+
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button5" to="." method="_on_button_5_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_button_3_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button4" to="." method="_on_button_4_pressed"]
+[connection signal="pressed" from="Panel3/Button" to="Panel3" method="_on_button_pressed"]

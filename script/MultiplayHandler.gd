@@ -17,6 +17,83 @@ signal client_connected(peer_id, client_info)
 signal client_disconnected(peer_id)
 signal server_disconnected
 
+### Server finding ###
+
+const DISCOVERY_PORT = 9998
+var discoverable := false
+var client_udp_peer := PacketPeerUDP.new()
+var broadcast_timer = 0.0
+var discovered_servers = {}
+var server_name = "Server"
+var server_description = "This is a server"
+
+#func start_server_broadcasting():
+	## Close the socket first if it's already open/bound to prevent conflicts
+	#if udp_peer.is_bound():
+		#udp_peer.close()
+		#
+	#udp_peer.set_broadcast_enabled(true)
+	#udp_peer.set_dest_address("255.255.255.255", DISCOVERY_PORT)
+	#
+	#var error = udp_peer.bind(DISCOVERY_PORT)
+	#if error != OK:
+		#print("Failed to bind UDP discovery port on server: ", error)
+	#else:
+		#print("Server broadcasting successfully bound to port ", DISCOVERY_PORT)
+
+# Call this on the host every frame from hostUI's _process()
+func handle_server_broadcasting(delta: float):
+	if not multiplayer.is_server() or not discoverable:
+		return
+		
+	broadcast_timer += delta
+	if broadcast_timer >= 2.0:
+		broadcast_timer = 0.0
+		var server_data = {
+			"name": server_name,
+			"description": server_description,
+			"players": clients.size()
+		}
+		var packet_bytes = JSON.stringify(server_data).to_utf8_buffer()
+		
+		# Send broadcast packet dynamically
+		var broadcaster = PacketPeerUDP.new()
+		broadcaster.set_broadcast_enabled(true)
+		broadcaster.set_dest_address("255.255.255.255", DISCOVERY_PORT)
+		broadcaster.put_packet(packet_bytes)
+
+# Call this when opening the join menu to start listening for hosts
+func start_client_discovery():
+	discovered_servers.clear()
+	
+	# If it's already bound, we don't need to bind it again! 
+	if client_udp_peer.is_bound():
+		print("Client discovery already active on port ", DISCOVERY_PORT)
+		return
+		
+	var error = client_udp_peer.bind(DISCOVERY_PORT)
+	if error == OK:
+		client_udp_peer.set_broadcast_enabled(true)
+		print("Client successfully listening for LAN servers on port ", DISCOVERY_PORT)
+	else:
+		print("Failed to bind client discovery port: ", error)
+
+func restart_client_discovery():
+	if client_udp_peer.is_bound():
+		client_udp_peer.close()
+		
+	discovered_servers.clear()
+	
+	var error = client_udp_peer.bind(DISCOVERY_PORT)
+	if error == OK:
+		client_udp_peer.set_broadcast_enabled(true)
+		print("Client discovery restarted and listening on port ", DISCOVERY_PORT)
+	else:
+		print("Failed to restart client discovery: ", error)
+		
+func set_discoverable(state: bool) -> void:
+	discoverable = state
+	
 func _ready():
 	multiplayer.peer_connected.connect(_on_client_connected)
 	multiplayer.peer_disconnected.connect(_on_client_disconnected)
@@ -33,6 +110,7 @@ func create_lobby():
 
 	clients[1] = client_info
 	client_connected.emit(1, client_info)
+	
 
 func join_lobby(address : String = ""):
 	if address.is_empty():
@@ -42,27 +120,12 @@ func join_lobby(address : String = ""):
 	if error:
 		return error
 	multiplayer.multiplayer_peer = peer
-	print("Joining Game",address)
+	print("Joining Server: ",address)
 	return true
 
 func remove_multiplayer_peer():
 	multiplayer.multiplayer_peer = OfflineMultiplayerPeer.new()
 	clients.clear()
-	
-# When the server decides to start the game from a UI scene,
-# do Lobby.load_game.rpc(filepath)
-@rpc("call_local", "reliable")
-func load_game(game_scene_path):
-	get_tree().change_scene_to_file(game_scene_path)
-
-# Every peer will call this when they have loaded the game scene.
-@rpc("any_peer")
-func player_loaded():
-	if multiplayer.is_server():
-		clients_loaded += 1
-		if clients_loaded == clients.size():
-			$/root/Game.start_game()
-			clients_loaded = 0
 
 # When a peer connects, send them my player info.
 # This allows transfer of all desired data for each player, not only the unique ID.
@@ -74,7 +137,7 @@ func _register_client(new_client_info):
 	var new_client_id = multiplayer.get_remote_sender_id()
 	clients[new_client_id] = new_client_info
 	client_connected.emit(new_client_id, new_client_info)
-	Global.rpc("updateplayerlist",new_client_id, new_client_info)
+	Global.rpc("updateclientlist",new_client_id, new_client_info)
 	
 func _on_client_disconnected(id):
 	clients.erase(id)
@@ -84,11 +147,11 @@ func _on_connected_ok():
 	var peer_id = multiplayer.get_unique_id()
 	clients[peer_id] = client_info
 	client_connected.emit(peer_id, client_info)
-	print("YEYEYYEYEYYE")
+	print("Client Is Connected")
 
 func _on_connected_fail():
 	remove_multiplayer_peer()
-	print("DIEEEEE")
+	print("Connection Failed")
 
 func _on_server_disconnected():
 	remove_multiplayer_peer()

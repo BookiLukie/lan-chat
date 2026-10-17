@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://vy5wfn21d3pp" path="res://script/hostUI.gd" id="1_bxxqf"]
 [ext_resource type="PackedScene" uid="uid://ocp7kpg64ne0" path="res://text_ui.tscn" id="2_75ep8"]
-[ext_resource type="Script" uid="uid://btimu8i4fuwab" path="res://cmd.gd" id="2_vup7s"]
+[ext_resource type="Script" uid="uid://btimu8i4fuwab" path="res://script/cmd.gd" id="2_vup7s"]
 
 [node name="HostUI" type="Control" unique_id=190145693]
 layout_mode = 3
@@ -46,19 +46,28 @@ bbcode_enabled = true
 text = "[b][wave][rainbow freq=1 sat=0.9 val=0.9 speed=0.1] You are the host"
 scroll_active = false
 
+[node name="Username" type="RichTextLabel" parent="Text Boxes" unique_id=71556992]
+layout_mode = 0
+offset_top = 24.0
+offset_right = 365.0
+offset_bottom = 64.0
+bbcode_enabled = true
+text = "Username:"
+
 [node name="IPAddress" type="RichTextLabel" parent="Text Boxes" unique_id=735352265]
 layout_mode = 0
+offset_top = 64.0
 offset_right = 365.0
-offset_bottom = 40.0
+offset_bottom = 104.0
 bbcode_enabled = true
 text = "IP address: 
 "
 
 [node name="ClientList" type="RichTextLabel" parent="Text Boxes" unique_id=1595151619]
 layout_mode = 0
-offset_top = 35.0
-offset_right = 359.0
-offset_bottom = 587.0
+offset_top = 99.0
+offset_right = 271.0
+offset_bottom = 582.0
 bbcode_enabled = true
 text = "Client List: [br]"
 
@@ -68,6 +77,23 @@ offset_left = 1051.0
 offset_top = 16.0
 offset_right = 1256.0
 offset_bottom = 228.0
+
+[node name="ServerDiscovery" type="Button" parent="VBoxContainer" unique_id=1243584492]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+toggle_mode = true
+text = "Discovery"
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/ServerDiscovery" unique_id=1315797953]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.75600004
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.019989014
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0, 0, 1)
 
 [node name="RegrabIP" type="Button" parent="VBoxContainer" unique_id=332507538]
 custom_minimum_size = Vector2(0, 50)
@@ -101,6 +127,7 @@ offset_top = 1.0
 offset_right = -283.0
 offset_bottom = 1.0
 
+[connection signal="toggled" from="VBoxContainer/ServerDiscovery" to="." method="_on_discovery_toggle_toggled"]
 [connection signal="pressed" from="VBoxContainer/RegrabIP" to="." method="_on_regrab_ip_pressed"]
 [connection signal="pressed" from="VBoxContainer/ResetServer" to="." method="_on_reset_server_pressed"]
 [connection signal="pressed" from="VBoxContainer/RefreshList" to="." method="_on_refresh_list_pressed"]

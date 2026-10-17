@@ -29,7 +29,7 @@ func send_message() -> void:
 	if username == "none" or username.is_empty():
 		username = LanHandler.client_info.get("name", "Player")
 	if currently_loaded_file:
-		print("Sending Image: ", currently_loaded_file)
+		print("Sending Image")
 		Global.rpc("new_message",username, currently_loaded_file, filetype, current_image_height)
 		$Panel2.visible = false
 		$"Panel2/image display".texture = load("res://icon.svg")
@@ -54,7 +54,7 @@ func file_dropped(file: PackedStringArray):
 			print("File is invalid")
 
 func load_image_from_drop(filepath:String):
-	print(filepath)
+	print("Loading File: ", filepath)
 	var file = FileAccess.open(filepath,FileAccess.READ)
 	if file == null:
 		return 

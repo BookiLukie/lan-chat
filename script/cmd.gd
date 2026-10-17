@@ -96,7 +96,7 @@ func _cmd_set_name(args):
 
 func _cmd_grab_data_id(args):
 	if args.size() == 1:
-		Global._request_client_data_rpc(int(args[0]))
+		Global._send_request_client_data_rpc(args[0])
 # --- crash the game ---
 func _cmd_crash():
 	get_tree().root.queue_free()
