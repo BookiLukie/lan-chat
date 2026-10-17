@@ -57,3 +57,13 @@ offset_right = 359.0
 offset_bottom = 587.0
 bbcode_enabled = true
 text = "Client List: [br]"
+
+[node name="Reconnect" type="Button" parent="." unique_id=2014514241]
+layout_mode = 0
+offset_left = 1148.0
+offset_top = 6.0
+offset_right = 1270.0
+offset_bottom = 45.0
+text = "Reconnect"
+
+[connection signal="pressed" from="Reconnect" to="." method="_on_reconnect_pressed"]

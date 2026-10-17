@@ -4,8 +4,8 @@ var ipv4s: Array = []
 
 func _ready():
 	get_all_ipv4()
-	LanHandler.client_connected.connect(add_to_client_list)
-	LanHandler.client_disconnected.connect(remove_from_client_list)
+	LanHandler.client_connected.connect(_on_client_list_changed)
+	LanHandler.client_disconnected.connect(_on_client_list_changed_disc)
 	await get_tree().process_frame
 	$"Text Boxes/IPAddress".text = str(ipv4s).remove_chars('"[]')
 
@@ -16,22 +16,43 @@ func get_all_ipv4() -> Array:
 			ipv4s.append(address)
 	return ipv4s
 
-func add_to_client_list(client_id, client_info: Dictionary):
-	print("New Client ", client_id, client_info)
-	$"Text Boxes/ClientList".text += client_info.get("name") + ": " + str(client_id) + "\n"
+#func add_to_client_list(client_id, client_info: Dictionary):
+	#print("New Client ", client_id, client_info)
+	#$"Text Boxes/ClientList".text += client_info.get("name") + ": " + str(client_id) + "\n"
+#
+#func remove_from_client_list(client_id):
+	#var text : String = $"Text Boxes/ClientList".text
+	#var lines = text.split("\n")
+	#var finished_lines = ["Client List: [br]"]
+	#for line in lines:
+		#if line.contains(str(client_id)):
+			#continue
+		#else:
+			#finished_lines.append(line)
+	#
+	#text = "\n".join(finished_lines)
+	#$"Text Boxes/ClientList".text = text
+# Triggered when a client connects
+func _on_client_list_changed(client_id, client_info: Dictionary):
+	print("Client connected: ", client_id, client_info)
+	refresh_client_display()
 
-func remove_from_client_list(client_id):
-	var text : String = $"Text Boxes/ClientList".text
-	var lines = text.split("\n")
-	var finished_lines = ["Client List: [br]"]
-	for line in lines:
-		if line.contains(str(client_id)):
-			continue
-		else:
-			finished_lines.append(line)
+# Triggered when a client disconnects
+func _on_client_list_changed_disc(client_id):
+	print("Client disconnected: ", client_id)
+	refresh_client_display()
 	
-	text = "\n".join(finished_lines)
-	$"Text Boxes/ClientList".text = text
+func refresh_client_display():
+	var list_text = "Client List:\n"
+	
+	# Loop through all active clients stored in LanHandler
+	for id in LanHandler.clients:
+		var client_info = LanHandler.clients[id]
+		var client_name = client_info.get("name", "Player")
+		list_text += client_name + ": " + str(id) + "\n"
+	
+	# Update the UI text box cleanly without duplicate headers or stale entries
+	$"Text Boxes/ClientList".text = list_text
 
 @rpc("authority")
 func _on_server_message_text_submitted(new_text: String) -> void:
@@ -47,7 +68,7 @@ func _on_regrab_ip_pressed() -> void:
 
 
 func _on_refresh_list_pressed() -> void:
-	pass # Replace with function body.
+	LanHandler.refresh_client_list()
 
 
 func _on_kick_all_pressed() -> void:
@@ -56,3 +77,7 @@ func _on_kick_all_pressed() -> void:
 
 func _on_save_text_log_pressed() -> void:
 	pass # Replace with function body.
+
+
+func _on_reset_server_pressed() -> void:
+	LanHandler.restart_server()

@@ -55,7 +55,6 @@ func remove_multiplayer_peer():
 func load_game(game_scene_path):
 	get_tree().change_scene_to_file(game_scene_path)
 
-
 # Every peer will call this when they have loaded the game scene.
 @rpc("any_peer")
 func player_loaded():
@@ -95,3 +94,38 @@ func _on_server_disconnected():
 	remove_multiplayer_peer()
 	clients.clear()
 	server_disconnected.emit()
+
+# Restart the host server 
+func restart_server() -> Error:
+	remove_multiplayer_peer()
+	clients.clear()
+	
+	var peer = ENetMultiplayerPeer.new()
+	var error = peer.create_server(PORT, MAX_CLIENTS)
+	if error:
+		print("Failed to restart server: ", error)
+		return error
+		
+	multiplayer.multiplayer_peer = peer
+	clients[1] = client_info
+	client_connected.emit(1, client_info)
+	print("Server restarted successfully on port ", PORT)
+	return OK
+
+# Reconnect client to the previously saved host IP
+func reconnect_client() -> Error:
+	remove_multiplayer_peer()
+	if Global.host_ip and not Global.host_ip.is_empty():
+		print("Attempting to reconnect to: ", Global.host_ip)
+		return join_lobby(Global.host_ip)
+	else:
+		print("No valid host IP found for reconnection.")
+		return FAILED
+
+func refresh_client_list() -> void:
+	if multiplayer.is_server():
+		for id in clients:
+			if id != 1:
+				# Re-broadcast registration info to ensure UI sync
+				_register_client.rpc_id(id, clients[id])
+		print("Client list refreshed by server.")
