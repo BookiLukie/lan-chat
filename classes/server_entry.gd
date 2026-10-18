@@ -31,6 +31,7 @@ func setup(ip: String, data: Dictionary, usable_width: float) -> void:
 
 func _on_connect_pressed() -> void:
 	Global.host_ip = server_ip
+	Global.current_client["user"] = $Panel2/TextEdit2.text
 	LanHandler.client_info.set("name", Global.current_client.user)
 	if LanHandler.join_lobby(server_ip):
 		get_tree().change_scene_to_file("res://client_view.tscn")

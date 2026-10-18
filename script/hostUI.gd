@@ -6,6 +6,7 @@ func _ready():
 	get_all_ipv4()
 	LanHandler.client_connected.connect(_on_client_list_changed)
 	LanHandler.client_disconnected.connect(_on_client_list_changed_disc)
+	Global.HostUI = self
 	await get_tree().process_frame
 	$"Text Boxes/IPAddress".text = str(ipv4s).remove_chars('"[]')
 	$"Text Boxes/Username".text = Global.current_client.user

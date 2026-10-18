@@ -1,6 +1,7 @@
 extends Control
 
 func _ready() -> void:
+	Global.ClientUI = self
 	$"Text Boxes/IPAddress".text = "Connected to: " + Global.host_ip
 	$"Text Boxes/Username".text = Global.current_client.user
 

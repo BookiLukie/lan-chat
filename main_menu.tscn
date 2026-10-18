@@ -118,20 +118,28 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel3" unique_id=25083598]
-layout_mode = 0
-offset_top = 60.0
-offset_right = 366.0
-offset_bottom = 406.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.147
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 0.17100143
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel3/ScrollContainer" unique_id=496336502]
 layout_mode = 2
 
 [node name="Button" type="Button" parent="Panel3" unique_id=75670269]
-layout_mode = 0
-offset_top = -32.0
-offset_right = 139.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -0.079
+anchor_right = 0.53300005
+offset_top = 0.15299988
+offset_right = -0.07801819
 offset_bottom = -1.0
-text = "Restart/Refresh"
+text = "Start Search/Restart"
 
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button5" to="." method="_on_button_5_pressed"]

@@ -93,4 +93,4 @@ placeholder_text = "Change Username:"
 
 [connection signal="pressed" from="Reconnect" to="." method="_on_reconnect_pressed"]
 [connection signal="pressed" from="FetchLatest" to="." method="_on_fetch_latest_pressed"]
-[connection signal="text_changed" from="LineEdit" to="." method="_on_line_edit_text_changed"]
+[connection signal="text_submitted" from="LineEdit" to="." method="_on_line_edit_text_changed"]

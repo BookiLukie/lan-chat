@@ -1,8 +1,13 @@
 extends Node
 
-var host_ip
+
+## Node refrencing 
+var HostUI
+var ClientUI 
+
+var host_ip 
 var current_client = {
-	"user" : "none",
+	"user" : "none", 
 	"role" : "none",
 	"peerid" : "00000000"
 	}

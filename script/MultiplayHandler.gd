@@ -64,24 +64,17 @@ func handle_server_broadcasting(delta: float):
 
 # Call this when opening the join menu to start listening for hosts
 func start_client_discovery():
-	discovered_servers.clear()
-	
-	# If it's already bound, we don't need to bind it again! 
 	if client_udp_peer.is_bound():
-		print("Client discovery already active on port ", DISCOVERY_PORT)
-		return
+		client_udp_peer.close()
+			
+		discovered_servers.clear()
 		
-	var error : Error
-	@warning_ignore("unassigned_variable")
-	while error != OK:
-		error = client_udp_peer.bind(DISCOVERY_PORT)
+		var error = client_udp_peer.bind(DISCOVERY_PORT)
 		if error == OK:
 			client_udp_peer.set_broadcast_enabled(true)
-			print("Client successfully listening for LAN servers on port ", DISCOVERY_PORT)
+			print("Client discovery restarted and listening on port ", DISCOVERY_PORT)
 		else:
-			print("Failed to bind client discovery port: ", error)
-			await get_tree().process_frame ## retry next frame
-			continue
+			print("Failed to restart client discovery: ", error)
 
 func restart_client_discovery():
 	if client_udp_peer.is_bound():
