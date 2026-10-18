@@ -94,3 +94,11 @@ func _on_save_text_log_pressed() -> void:
 
 func _on_reset_server_pressed() -> void:
 	LanHandler.restart_server()
+
+
+func _on_line_edit_text_submitted(new_text: String) -> void:
+	LanHandler.server_name = new_text
+
+
+func _on_line_edit_2_text_submitted(new_text: String) -> void:
+	LanHandler.server_description = new_text

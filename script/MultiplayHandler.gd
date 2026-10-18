@@ -47,7 +47,7 @@ func handle_server_broadcasting(delta: float):
 		return
 		
 	broadcast_timer += delta
-	if broadcast_timer >= 2.0:
+	if broadcast_timer >= randf_range(1.85,2.15):
 		broadcast_timer = 0.0
 		var server_data = {
 			"name": server_name,
@@ -71,12 +71,17 @@ func start_client_discovery():
 		print("Client discovery already active on port ", DISCOVERY_PORT)
 		return
 		
-	var error = client_udp_peer.bind(DISCOVERY_PORT)
-	if error == OK:
-		client_udp_peer.set_broadcast_enabled(true)
-		print("Client successfully listening for LAN servers on port ", DISCOVERY_PORT)
-	else:
-		print("Failed to bind client discovery port: ", error)
+	var error : Error
+	@warning_ignore("unassigned_variable")
+	while error != OK:
+		error = client_udp_peer.bind(DISCOVERY_PORT)
+		if error == OK:
+			client_udp_peer.set_broadcast_enabled(true)
+			print("Client successfully listening for LAN servers on port ", DISCOVERY_PORT)
+		else:
+			print("Failed to bind client discovery port: ", error)
+			await get_tree().process_frame ## retry next frame
+			continue
 
 func restart_client_discovery():
 	if client_udp_peer.is_bound():

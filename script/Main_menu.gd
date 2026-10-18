@@ -33,3 +33,4 @@ func _on_button_4_pressed() -> void:
 
 func _on_button_5_pressed() -> void:
 	$Panel3.visible = !$Panel3.visible
+	LanHandler.start_client_discovery()

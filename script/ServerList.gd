@@ -6,7 +6,7 @@ var known_servers = {} # IP: server_data dictionary
 func _ready() -> void:
 	self.visible = false
 	# Start listening for LAN broadcasts on the client side
-	LanHandler.start_client_discovery()
+	# Starts when button to open menu is pressed
 
 func _process(delta: float) -> void:
 	if not is_visible_in_tree(): return

@@ -98,7 +98,6 @@ offset_bottom = 0.05899048
 placeholder_text = "Enter Username: "
 
 [node name="Panel3" type="Panel" parent="." unique_id=175264817]
-visible = false
 layout_mode = 0
 offset_left = 323.0
 offset_top = 181.0
