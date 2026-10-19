@@ -1,8 +1,8 @@
 extends Control
 
-@onready var server_container: VBoxContainer = $ScrollContainer/VBoxContainer
+@onready var server_container: ScrollContainer = $ScrollContainer
 var known_servers = {} # IP: server_data dictionary
-
+var current_user = "User"
 func _ready() -> void:
 	self.visible = false
 	# Start listening for LAN broadcasts on the client side
@@ -28,11 +28,11 @@ func poll_lan_servers() -> void:
 				add_server_to_ui(ip, data)
 
 func add_server_to_ui(ip: String, data: Dictionary) -> void:
-	var parent_width = server_container.size.x if server_container.size.x > 0 else 300.0
+	var parent_width = server_container.size.x# if server_container.size.x > 0 else 300.0
 	
 	# Instantiate our custom ServerEntry class
 	var entry = ServerEntry.new()
-	entry.setup(ip, data, parent_width)
+	entry.setup(ip, data, parent_width, current_user)
 	server_container.add_child(entry)
 
 
@@ -43,3 +43,7 @@ func _on_button_pressed() -> void:
 	known_servers.clear()
 	LanHandler.restart_client_discovery()
 	
+
+
+func _on_text_edit_2_text_changed(new_text: String) -> void:
+	current_user = new_text

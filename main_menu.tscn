@@ -87,6 +87,7 @@ offset_bottom = 0.018997192
 placeholder_text = "Enter IP address eg 10.202.0.00"
 
 [node name="TextEdit2" type="LineEdit" parent="Panel2" unique_id=566910372]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.52000004
@@ -146,4 +147,5 @@ text = "Start Search/Restart"
 [connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_button_2_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_button_3_pressed"]
 [connection signal="pressed" from="VBoxContainer/Button4" to="." method="_on_button_4_pressed"]
+[connection signal="text_changed" from="Panel2/TextEdit2" to="Panel3" method="_on_text_edit_2_text_changed"]
 [connection signal="pressed" from="Panel3/Button" to="Panel3" method="_on_button_pressed"]
