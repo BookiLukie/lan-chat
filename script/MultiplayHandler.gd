@@ -19,7 +19,7 @@ signal server_disconnected
 
 ### Server finding ###
 
-const DISCOVERY_PORT = 9998
+const DISCOVERY_PORT = 443
 var discoverable := false
 var client_udp_peer := PacketPeerUDP.new()
 var broadcast_timer = 0.0

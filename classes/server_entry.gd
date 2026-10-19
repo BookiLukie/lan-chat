@@ -6,6 +6,7 @@ var server_name: String = ""
 var server_desc: String = ""
 var player_count: int = 0
 var username = "User"
+
 func setup(ip: String, data: Dictionary, usable_width: float, usernamenew = "User") -> void:
 	username = usernamenew
 	server_ip = ip
