@@ -1,7 +1,9 @@
 extends Panel
 class_name msg
 
-var current_text = "This is a placeholder message. it is also very long This is a placeholder message. it is also very longThis is a placeholder message. it is also very longThis is a placeholder message. it is also very long"
+var content = ""
+var extcontent = ""
+var exfiletype = ""
 var bbcode_effects
 var user = "USER"
 var time = Time.get_unix_time_from_system()
@@ -15,16 +17,15 @@ func _ready() -> void:
 	
 	# Dynamically get parent width, defaulting safely if unavailable
 	var parent_width = 300.0
-	if get_parent() is Control and get_parent().size.x > 0:
-		parent_width = get_parent().size.x - 20 # 20px margin padding
-		
+	if get_parent().get_parent() is Control and get_parent().get_parent().size.x > 0:
+		parent_width = get_parent().get_parent().size.x - 20 # 20px margin padding
 	var usable_width = parent_width
 	var text_width = usable_width - 20 # 10px padding on left and right
 	
 	custom_minimum_size = Vector2(usable_width, 50)
 	position = Vector2.ZERO
 	
-	# 1. Setup the username and timestamp header
+	# Setup the username and timestamp header
 	var name_display = WrapRichText.new()
 	name_display.bbcode_enabled = true
 	name_display.position = Vector2(10, 5)
@@ -32,26 +33,41 @@ func _ready() -> void:
 	name_display.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	name_display.text = user + " [color=#808080]" + str(format_message_time(time)) + "[/color]"
 	add_child(name_display)
+	
+	var current_y = 30.0
+	var text_to_display
+	if filetype == "string":
+		text_to_display = content
+	elif extcontent != "":
+		text_to_display = extcontent
+	
 	var text = WrapRichText.new()
-	if filetype != "string":
-		text.is_queued_for_deletion()
-		var texture_rect = load_image_from_buffer(current_text,filetype,text_width)
+	text.bbcode_enabled = true
+	text.fit_content = true
+	text.position = Vector2(10, 30)
+	text.custom_minimum_size = Vector2(text_width, 0)
+	text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	text.autowrap_mode = TextServer.AUTOWRAP_WORD
+	if (content is PackedByteArray and text_to_display != "" and exfiletype == "string") or (content is not PackedByteArray and filetype == "string"):
+		text.text = text_to_display
 		await get_tree().process_frame
-		var total_height = texture_rect.position.y + texture_rect.size.y + 15 # 15px bottom padding
-		custom_minimum_size = Vector2(usable_width, max(50.0, total_height))
-	else:
-		# 2. Setup the message body text node
-		text.bbcode_enabled = true
-		text.fit_content = true
-		text.position = Vector2(10, 30)
-		text.custom_minimum_size = Vector2(text_width, 0)
-		text.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		text.update_wrapping(current_text)
 		add_child(text)
-		# 3. Dynamically resize the Panel height to fit the header + text + bottom padding
+		var total_height_text = text.position.y + text.get_content_height() + 10
+		current_y += total_height_text
+	if filetype != "string" and filetype != null:
+		var texture_rect = load_image_from_buffer(content,filetype,text_width)
+		if extcontent != "":
+			texture_rect.position.y = current_y - 30
 		await get_tree().process_frame
-		var total_height = text.position.y + text.size.y + 15 # 15px bottom padding
-		custom_minimum_size = Vector2(usable_width, max(50.0, total_height))
+		var total_height_image = texture_rect.position.y + texture_rect.size.y + 15 # 15px bottom padding
+		current_y += total_height_image
+		if extcontent != "":
+			custom_minimum_size = Vector2(usable_width, max(50,current_y - 100)) 
+		else:
+			custom_minimum_size = Vector2(usable_width, max(50,current_y - 25))
+	else:
+		custom_minimum_size = Vector2(usable_width, max(50,current_y))
+	
 
 func load_image_from_buffer(buffer, type, text_width):
 	var image = Image.new()

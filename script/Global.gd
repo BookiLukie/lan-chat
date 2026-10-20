@@ -12,7 +12,7 @@ var current_client = {
 	"peerid" : "00000000"
 	}
 signal server_message_received(message_text)
-signal message_received(user,message_text,data_type,image_height)
+signal message_received(metadata,message_text)
 ## WE USE GLOBAL SCRIPT TO RECIVE AND SEND DATA AND SIGNALS 
 ## WE CALL GLOBAL.RPC("FUNCTION_NAME", FUCNTION ARGS) TO SEND SIGNALS TO ALL LOCATION 
 enum actions { 
@@ -47,9 +47,9 @@ func tell_clients(text):
 	print("DEBUG: Signal 'server_message_received' was emitted.")
 
 @rpc("any_peer","call_local")
-func new_message(user,text,data_type = "string", image_height = 100):
+func new_message(metadata,text):
 	print("You have mail")
-	message_received.emit(user,text,data_type, image_height)
+	message_received.emit(metadata,text)
 	
 @rpc("any_peer")
 func updateclientlist(client,info):
